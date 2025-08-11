@@ -1,8 +1,8 @@
-# VNTP - Enhanced OpenTelemetry Integration
+# VNTP - Complete SigNoz Integration
 
 ## Overview
 
-This VNTP (Vendor-Neutral Telemetry Proof) system demonstrates comprehensive observability using OpenTelemetry with SigNoz, Prometheus, and Grafana.
+This VNTP (Vendor-Neutral Telemetry Proof) system demonstrates comprehensive observability using OpenTelemetry with **full SigNoz integration**. All telemetry data (traces, metrics, logs) from applications and infrastructure is collected and visualized in SigNoz, with Prometheus/Grafana providing complementary infrastructure monitoring.
 
 ## Services Architecture
 
@@ -18,14 +18,16 @@ This VNTP (Vendor-Neutral Telemetry Proof) system demonstrates comprehensive obs
 - **Component**: `imisanzu`
 - **Type**: `aggregation-api`
 
-## Telemetry Configuration
+## Complete SigNoz Telemetry Configuration
 
 ### OpenTelemetry Setup
-Both services are configured with:
-- **Trace Export**: OTLP HTTP to localhost:4318 (SigNoz)
-- **Metrics Export**: OTLP HTTP to localhost:4318 (SigNoz)
+Both services are fully integrated with SigNoz:
+- **Trace Export**: OTLP HTTP to signoz-otel-collector:4318
+- **Metrics Export**: OTLP HTTP to signoz-otel-collector:4318  
+- **Logs Export**: OTLP HTTP to signoz-otel-collector:4318
 - **Auto-Instrumentations**: HTTP, Express, PostgreSQL, Redis
-- **Custom Resource Attributes**: Service name, version, namespace, environment
+- **Resource Attributes**: service.name, service.version, deployment.environment
+- **Network Integration**: Connected to SigNoz network for seamless communication
 
 ### Custom Spans and Attributes
 
@@ -52,22 +54,41 @@ Both services are configured with:
 - `data.source`: cached_from_oracle
 - `service.component`: imisanzu-contribution
 
-## Unified Observability Architecture
+## Complete Observability Architecture with SigNoz Integration
 
-### SigNoz OTEL Collector (Unified - Port 4317/4318)
-- **Single Point of Entry**: All telemetry data flows through SigNoz OTEL collector
-- **Dual Export Strategy**: 
-  - Exports metrics to Prometheus (port 8889) for Grafana dashboards
-  - Sends traces/metrics/logs to SigNoz backend for detailed analysis
-- **No Port Conflicts**: Eliminates duplicate OTEL collectors
+### SigNoz as Primary Observability Platform
+- **All Telemetry to SigNoz**: Traces, metrics, and logs flow directly to SigNoz OTEL collector
+- **Multi-Network Setup**: Services connect to both default network and SigNoz network
+- **Comprehensive Log Aggregation**: Fluent Bit collects logs from all containers
+- **Database Integration**: PostgreSQL and Redis metrics/logs also sent to SigNoz
 
-### Data Flow:
+### Enhanced Data Flow:
 ```
-NestJS Services (Oracle & Imisanzu) 
-    ↓ (OTLP HTTP/gRPC)
-SigNoz OTEL Collector (4317/4318)
-    ├── Prometheus Metrics (8889) → Prometheus → Grafana
-    └── Traces/Metrics/Logs → SigNoz Backend → SigNoz Frontend
+┌─────────────────────────────────────────────────────────────┐
+│                   Application Layer                         │
+├─────────────────────────────────────────────────────────────┤
+│ Oracle Service + Imisanzu Service (OTEL Instrumented)      │
+│         ↓ (OTLP HTTP traces/metrics/logs)                  │
+├─────────────────────────────────────────────────────────────┤
+│                Infrastructure Layer                         │
+├─────────────────────────────────────────────────────────────┤
+│ PostgreSQL + Redis + Container Logs                        │
+│         ↓ (Fluent Bit Log Aggregation)                     │
+├─────────────────────────────────────────────────────────────┤
+│                  SigNoz OTEL Collector                     │
+│                   (Port 4317/4318)                         │
+│         ↓ (All telemetry data)                             │
+├─────────────────────────────────────────────────────────────┤
+│  SigNoz Backend → SigNoz Frontend (localhost:3301)         │
+│            (Complete Observability Platform)               │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│              Complementary Infrastructure                   │
+├─────────────────────────────────────────────────────────────┤
+│ Prometheus Exporters → Prometheus → Grafana                │
+│        (Infrastructure metrics backup)                     │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ### SigNoz (localhost:3301) 
@@ -87,22 +108,27 @@ SigNoz OTEL Collector (4317/4318)
 - **Login**: admin/admin
 - **Data Sources**: Prometheus (infrastructure + OTEL metrics)
 
-## Testing Telemetry
+## Complete Integration Testing
 
+### Quick Start
 1. **Start SigNoz** (separate monitoring/signoz folder):
    ```bash
-   cd monitoring/signoz
+   cd monitoring/signoz/deploy/docker
    docker-compose up -d
    ```
 
-2. **Start VNTP Services** (now uses unified OTEL collector):
+2. **Start VNTP Services** (fully integrated with SigNoz):
    ```bash
    docker-compose up -d
    ```
-   
-   **Note**: The main docker-compose no longer includes a separate otel-collector service. All telemetry flows through SigNoz's OTEL collector.
 
-3. **Generate Traces**:
+3. **Run Integration Test**:
+   ```bash
+   ./scripts/signoz-integration-test.sh
+   ```
+
+### Manual Testing
+1. **Generate Application Traces**:
    ```bash
    # Create employee in Oracle service
    curl -X POST http://localhost:3002/api/v1/employees -H "Content-Type: application/json" -d '{
@@ -116,25 +142,42 @@ SigNoz OTEL Collector (4317/4318)
    curl http://localhost:3001/api/v1/contributions/employee/TEST123
    ```
 
-4. **View in SigNoz**:
-   - Open http://localhost:3301
-   - Check Services tab for service health
-   - View Traces for request flow analysis
-   - Monitor custom spans and business metrics
+2. **Verify Complete SigNoz Integration**:
+   - **Services**: http://localhost:3301 → Services tab
+     - ✅ oracle-service should appear
+     - ✅ imisanzu-service should appear
+     - ✅ postgres-oracle, postgres-imisanzu, redis (via logs)
+   
+   - **Traces**: View detailed request flows between services
+   - **Logs**: All application and database logs aggregated
+   - **Metrics**: Business metrics + infrastructure metrics
+   - **Dashboards**: Pre-built and custom dashboards
 
-## Key Benefits
+## Key Benefits of Complete SigNoz Integration
 
-### Unified Architecture Benefits:
-- **No Port Conflicts**: Single OTEL collector eliminates duplicate services
-- **Resource Efficiency**: Reduced memory and CPU usage with unified collector
-- **Simplified Deployment**: Fewer services to manage and monitor
-- **Consistent Data**: All telemetry flows through same pipeline ensuring data consistency
+### SigNoz as Single Source of Truth:
+- **Unified Observability**: All telemetry data (traces, metrics, logs) in one platform
+- **Real-time Visibility**: Live service health, performance, and error tracking
+- **Complete Service Map**: Full dependency visualization including databases
+- **Advanced APM**: Detailed application performance monitoring with business context
+- **Log Correlation**: Correlated logs with traces for faster debugging
 
-### Observability Benefits:
-- **Service Performance**: Track response times, error rates, throughput across both platforms
-- **Business Metrics**: Monitor contribution amounts, employee operations, cache efficiency  
-- **Error Tracking**: Detailed exception monitoring with stack traces in SigNoz
-- **Dependencies**: Visualize PostgreSQL and Redis interactions via both SigNoz and Grafana
-- **Cross-Service Tracing**: Follow requests from Imisanzu to Oracle service in SigNoz
-- **Infrastructure Monitoring**: Database connections, memory usage, cache performance in Grafana
-- **Dual Visualization**: Rich APM in SigNoz + Traditional dashboards in Grafana
+### Enhanced Monitoring Capabilities:
+- **Multi-Layer Observability**: Application + Infrastructure + Database logs/metrics
+- **Business Intelligence**: Custom business metrics alongside technical metrics  
+- **Proactive Alerting**: Early detection of issues across all system components
+- **Performance Optimization**: Identify bottlenecks in the entire request flow
+- **Compliance & Audit**: Complete audit trail of all system interactions
+
+### Operational Excellence:
+- **Faster MTTR**: Quick root cause analysis with correlated telemetry
+- **Predictive Insights**: Trend analysis for capacity planning
+- **Zero Blind Spots**: Complete visibility into microservices interactions
+- **Developer Experience**: Rich debugging context for faster development
+- **Production Readiness**: Enterprise-grade observability for production workloads
+
+### Architecture Benefits:
+- **Cloud-Native Design**: Scalable, container-based observability stack
+- **Vendor-Neutral**: OpenTelemetry standard ensures no vendor lock-in
+- **Cost-Effective**: Open-source solution with enterprise features
+- **Easy Deployment**: Docker-based setup with minimal configuration

@@ -2,6 +2,7 @@ import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
@@ -14,6 +15,11 @@ const traceExporter = new OTLPTraceExporter({
 // Configure metrics exporter
 const metricExporter = new OTLPMetricExporter({
   url: (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318') + '/v1/metrics',
+});
+
+// Configure logs exporter
+const logExporter = new OTLPLogExporter({
+  url: (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318') + '/v1/logs',
 });
 
 // Define service resource attributes
@@ -35,6 +41,7 @@ const sdk = new NodeSDK({
     exporter: metricExporter,
     exportIntervalMillis: 30000,
   }) as any,
+  logRecordProcessor: logExporter as any,
   instrumentations: [
     getNodeAutoInstrumentations({
       // Disable noisy instrumentations

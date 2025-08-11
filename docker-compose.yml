@@ -64,7 +64,11 @@ services:
       - JWT_ISSUER=vntp-oracle-service
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318
+      - OTEL_EXPORTER_OTLP_HEADERS=
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=oracle-service,service.version=1.0.0,deployment.environment=docker
+    networks:
+      - default
     depends_on:
       postgres-oracle:
         condition: service_healthy
@@ -99,7 +103,11 @@ services:
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
       - ORACLE_SERVICE_URL=http://oracle-service:3002
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318
+      - OTEL_EXPORTER_OTLP_HEADERS=
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=imisanzu-service,service.version=1.0.0,deployment.environment=docker
+    networks:
+      - default
     depends_on:
       postgres-imisanzu:
         condition: service_healthy
@@ -179,6 +187,27 @@ services:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
+
+  # Log Aggregation for SigNoz
+  fluent-bit:
+    image: fluent/fluent-bit:latest
+    container_name: vntp-fluent-bit
+    networks:
+      - default
+    volumes:
+      - ./monitoring/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./monitoring/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - FLB_LOG_LEVEL=info
+    depends_on:
+      - oracle-service
+      - imisanzu-service
+
+networks:
+  default:
+    name: vntp-network
 
 volumes:
   postgres_imisanzu_data:
