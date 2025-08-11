@@ -1,0 +1,192 @@
+services:
+  # Databases
+  postgres-imisanzu:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: imisanzu_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: imisanzu_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_imisanzu_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U imisanzu_user -d imisanzu_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-oracle:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: oracle_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: oracle_db
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_oracle_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U oracle_user -d oracle_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Application Services
+  oracle-service:
+    build:
+      context: ./oracle
+      dockerfile: Dockerfile
+    ports:
+      - '3002:3002'
+    environment:
+      - DATABASE_URL=postgresql://oracle_user:password@postgres-oracle:5432/oracle_db?schema=public
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - API_PORT=3002
+      - API_PREFIX=api/v1
+      - SWAGGER_ENABLE=1
+      - JWT_SECRET=your_jwt_secret_key_here
+      - JWT_ISSUER=vntp-oracle-service
+      - HEALTH_TOKEN=health_check_token_123
+      - PASSENGERS_ALLOWED=yes
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    depends_on:
+      postgres-oracle:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget -q --spider http://localhost:3002/api/v1/employees || exit 1',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  imisanzu-service:
+    build:
+      context: ./imisanzu
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      - DATABASE_URL=postgresql://imisanzu_user:password@postgres-imisanzu:5432/imisanzu_db?schema=public
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - API_PORT=3001
+      - API_PREFIX=api/v1
+      - SWAGGER_ENABLE=1
+      - JWT_SECRET=your_jwt_secret_key_here
+      - JWT_ISSUER=vntp-imisanzu-service
+      - HEALTH_TOKEN=health_check_token_123
+      - PASSENGERS_ALLOWED=yes
+      - ORACLE_SERVICE_URL=http://oracle-service:3002
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    depends_on:
+      postgres-imisanzu:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      oracle-service:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget -q --spider http://localhost:3001/api/v1/employees || exit 1',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Observability Stack
+  postgres-exporter-imisanzu:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres-exporter-imisanzu
+    environment:
+      - DATA_SOURCE_NAME=postgresql://imisanzu_user:password@postgres-imisanzu:5432/imisanzu_db?sslmode=disable
+    ports:
+      - '9187:9187'
+    depends_on:
+      postgres-imisanzu:
+        condition: service_healthy
+
+  postgres-exporter-oracle:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres-exporter-oracle
+    environment:
+      - DATA_SOURCE_NAME=postgresql://oracle_user:password@postgres-oracle:5432/oracle_db?sslmode=disable
+    ports:
+      - '9188:9187'
+    depends_on:
+      postgres-oracle:
+        condition: service_healthy
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: redis-exporter
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+    ports:
+      - '9121:9121'
+    depends_on:
+      redis:
+        condition: service_healthy
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_imisanzu_data:
+  postgres_oracle_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  signoz_data:
+  clickhouse_data:
+  zookeeper_data:
+  alertmanager_data:
