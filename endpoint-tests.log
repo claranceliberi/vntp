@@ -1957,3 +1957,173 @@
 [2025-08-11 23:04:44] Created test employee: {"statusCode":500,"message":"Internal server error"}
 [2025-08-11 23:04:44] Test data created successfully
 [2025-08-11 23:04:44] Iteration #281 completed: 5/9 tests passed (55%)
+[2025-08-11 23:05:14] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:05:14] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:05:14] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:05:14] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:05:14] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:05:14] Test data created successfully
+[2025-08-11 23:05:14] Iteration #282 completed: 5/9 tests passed (55%)
+[2025-08-11 23:05:44] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:05:44] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:05:44] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:05:44] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:05:44] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:05:44] Test data created successfully
+[2025-08-11 23:05:44] Iteration #283 completed: 5/9 tests passed (55%)
+[2025-08-11 23:06:14] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:06:14] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:06:14] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:06:14] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:06:14] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:06:14] Test data created successfully
+[2025-08-11 23:06:14] Iteration #284 completed: 5/9 tests passed (55%)
+[2025-08-11 23:06:45] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:06:45] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:06:45] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:06:45] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:06:45] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:06:45] Test data created successfully
+[2025-08-11 23:06:45] Iteration #285 completed: 5/9 tests passed (55%)
+[2025-08-11 23:07:15] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:07:15] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:07:15] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:07:15] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:07:15] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:07:15] Test data created successfully
+[2025-08-11 23:07:15] Iteration #286 completed: 5/9 tests passed (55%)
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Oracle /api/v1/health
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Oracle /api/v1/employees
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/health
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Prometheus /-/ready
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for Grafana /api/health
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for SigNoz Query /api/v1/version
+[2025-08-11 23:07:45] 🔥 CHAOS: Simulating failure for SigNoz Frontend /
+[2025-08-11 23:07:45] 🔥 CHAOS: Skipping test data creation due to simulated failure
+[2025-08-11 23:07:45] Iteration #287 completed: 0/9 tests passed (0%)
+[2025-08-11 23:08:15] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:08:15] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:08:15] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:08:15] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:08:15] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:08:15] Test data created successfully
+[2025-08-11 23:08:15] Iteration #288 completed: 5/9 tests passed (55%)
+[2025-08-11 23:08:45] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:08:45] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:08:46] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:08:46] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:08:46] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:08:46] Test data created successfully
+[2025-08-11 23:08:46] Iteration #289 completed: 5/9 tests passed (55%)
+[2025-08-11 23:09:16] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:09:16] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:09:16] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:09:16] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:09:16] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:09:16] Test data created successfully
+[2025-08-11 23:09:16] Iteration #290 completed: 5/9 tests passed (55%)
+[2025-08-11 23:09:46] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:09:46] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:09:46] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:09:46] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:09:46] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:09:46] Test data created successfully
+[2025-08-11 23:09:46] Iteration #291 completed: 5/9 tests passed (55%)
+[2025-08-11 23:10:16] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:10:16] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:10:16] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:10:16] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:10:16] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:10:16] Test data created successfully
+[2025-08-11 23:10:16] Iteration #292 completed: 5/9 tests passed (55%)
+[2025-08-11 23:10:46] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:10:46] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:10:46] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:10:46] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:10:47] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:10:47] Test data created successfully
+[2025-08-11 23:10:47] Iteration #293 completed: 5/9 tests passed (55%)
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Oracle /api/v1/health
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Oracle /api/v1/employees
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/health
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Prometheus /-/ready
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for Grafana /api/health
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for SigNoz Query /api/v1/version
+[2025-08-11 23:11:17] 🔥 CHAOS: Simulating failure for SigNoz Frontend /
+[2025-08-11 23:11:17] 🔥 CHAOS: Skipping test data creation due to simulated failure
+[2025-08-11 23:11:17] Iteration #294 completed: 0/9 tests passed (0%)
+[2025-08-11 23:11:47] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:11:47] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:11:47] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:11:47] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:11:47] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:11:47] Test data created successfully
+[2025-08-11 23:11:47] Iteration #295 completed: 5/9 tests passed (55%)
+[2025-08-11 23:12:17] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:12:17] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:12:17] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:12:17] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:12:17] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:12:17] Test data created successfully
+[2025-08-11 23:12:17] Iteration #296 completed: 5/9 tests passed (55%)
+[2025-08-11 23:12:47] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:12:47] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:12:47] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:12:47] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:12:47] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:12:47] Test data created successfully
+[2025-08-11 23:12:47] Iteration #297 completed: 5/9 tests passed (55%)
+[2025-08-11 23:13:17] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:13:18] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:13:18] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:13:18] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:13:18] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:13:18] Test data created successfully
+[2025-08-11 23:13:18] Iteration #298 completed: 5/9 tests passed (55%)
+[2025-08-11 23:13:48] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:13:48] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:13:48] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:13:48] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:13:48] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:13:48] Test data created successfully
+[2025-08-11 23:13:48] Iteration #299 completed: 5/9 tests passed (55%)
+[2025-08-11 23:14:18] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:14:18] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:14:18] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:14:18] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:14:18] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:14:18] Test data created successfully
+[2025-08-11 23:14:18] Iteration #300 completed: 5/9 tests passed (55%)
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Oracle /api/v1/health
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Oracle /api/v1/employees
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/health
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Prometheus /-/ready
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for Grafana /api/health
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for SigNoz Query /api/v1/version
+[2025-08-11 23:14:48] 🔥 CHAOS: Simulating failure for SigNoz Frontend /
+[2025-08-11 23:14:48] 🔥 CHAOS: Skipping test data creation due to simulated failure
+[2025-08-11 23:14:48] Iteration #301 completed: 0/9 tests passed (0%)
+[2025-08-11 23:15:18] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:15:18] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:15:18] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:15:18] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:15:18] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:15:18] Test data created successfully
+[2025-08-11 23:15:18] Iteration #302 completed: 5/9 tests passed (55%)
+[2025-08-11 23:15:48] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:15:49] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:15:49] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:15:49] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:15:49] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:15:49] Test data created successfully
+[2025-08-11 23:15:49] Iteration #303 completed: 5/9 tests passed (55%)
+[2025-08-11 23:16:19] SUCCESS: Oracle /api/v1/employees returned 200
+[2025-08-11 23:16:19] SUCCESS: Prometheus /-/ready returned 200
+[2025-08-11 23:16:19] SUCCESS: Grafana /api/health returned 200
+[2025-08-11 23:16:19] SUCCESS: SigNoz Query /api/v1/version returned 200
+[2025-08-11 23:16:19] Created test employee: {"statusCode":500,"message":"Internal server error"}
+[2025-08-11 23:16:19] Test data created successfully
+[2025-08-11 23:16:19] Iteration #304 completed: 5/9 tests passed (55%)

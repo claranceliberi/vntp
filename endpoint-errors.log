@@ -1410,3 +1410,107 @@
 [2025-08-11 23:04:44] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
 [2025-08-11 23:04:44] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
 [2025-08-11 23:04:44] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:05:14] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:05:14] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:05:14] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:05:14] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:05:44] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:05:44] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:05:44] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:05:44] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:06:14] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:06:14] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:06:14] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:06:14] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:06:45] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:06:45] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:06:45] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:06:45] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:07:15] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:07:15] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:07:15] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:07:15] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:07:45] ERROR: Simulated failure for Oracle /api/v1/health
+[2025-08-11 23:07:45] ERROR: Simulated failure for Oracle /api/v1/employees
+[2025-08-11 23:07:45] ERROR: Simulated failure for Imisanzu /api/v1/health
+[2025-08-11 23:07:45] ERROR: Simulated failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:07:45] ERROR: Simulated failure for Prometheus /-/ready
+[2025-08-11 23:07:45] ERROR: Simulated failure for Grafana /api/health
+[2025-08-11 23:07:45] ERROR: Simulated failure for SigNoz Query /api/v1/version
+[2025-08-11 23:07:45] ERROR: Simulated failure for SigNoz Frontend /
+[2025-08-11 23:08:15] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:08:15] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:08:15] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:08:15] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:08:45] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:08:45] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:08:45] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:08:46] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:09:16] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:09:16] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:09:16] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:09:16] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:09:46] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:09:46] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:09:46] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:09:46] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:10:16] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:10:16] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:10:16] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:10:16] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:10:46] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:10:46] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:10:46] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:10:47] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:11:17] ERROR: Simulated failure for Oracle /api/v1/health
+[2025-08-11 23:11:17] ERROR: Simulated failure for Oracle /api/v1/employees
+[2025-08-11 23:11:17] ERROR: Simulated failure for Imisanzu /api/v1/health
+[2025-08-11 23:11:17] ERROR: Simulated failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:11:17] ERROR: Simulated failure for Prometheus /-/ready
+[2025-08-11 23:11:17] ERROR: Simulated failure for Grafana /api/health
+[2025-08-11 23:11:17] ERROR: Simulated failure for SigNoz Query /api/v1/version
+[2025-08-11 23:11:17] ERROR: Simulated failure for SigNoz Frontend /
+[2025-08-11 23:11:47] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:11:47] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:11:47] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:11:47] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:12:17] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:12:17] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:12:17] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:12:17] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:12:47] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:12:47] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:12:47] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:12:47] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:13:17] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:13:17] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:13:17] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:13:18] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:13:48] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:13:48] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:13:48] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:13:48] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:14:18] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:14:18] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:14:18] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:14:18] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:14:48] ERROR: Simulated failure for Oracle /api/v1/health
+[2025-08-11 23:14:48] ERROR: Simulated failure for Oracle /api/v1/employees
+[2025-08-11 23:14:48] ERROR: Simulated failure for Imisanzu /api/v1/health
+[2025-08-11 23:14:48] ERROR: Simulated failure for Imisanzu /api/v1/contributions
+[2025-08-11 23:14:48] ERROR: Simulated failure for Prometheus /-/ready
+[2025-08-11 23:14:48] ERROR: Simulated failure for Grafana /api/health
+[2025-08-11 23:14:48] ERROR: Simulated failure for SigNoz Query /api/v1/version
+[2025-08-11 23:14:48] ERROR: Simulated failure for SigNoz Frontend /
+[2025-08-11 23:15:18] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:15:18] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:15:18] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:15:18] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:15:48] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:15:48] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:15:49] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:15:49] ERROR: SigNoz Frontend / - Expected: 404, Got: 200
+[2025-08-11 23:16:19] ERROR: Oracle /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:16:19] ERROR: Imisanzu /api/v1/health - Expected: 200, Got: 403
+[2025-08-11 23:16:19] ERROR: Imisanzu /api/v1/contributions - Expected: 200, Got: 404
+[2025-08-11 23:16:19] ERROR: SigNoz Frontend / - Expected: 404, Got: 200

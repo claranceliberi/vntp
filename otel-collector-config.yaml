@@ -15,19 +15,17 @@ processors:
     check_interval: 1s
 
 exporters:
-  # Prometheus export for Grafana
+  # Prometheus export for Grafana  
   prometheus:
-    endpoint: "0.0.0.0:8090"
+    endpoint: "0.0.0.0:8889"
     const_labels:
       cluster: vntp-demo
   
-  # SigNoz export via OTLP
+  # SigNoz export via OTLP HTTP
   otlp/signoz:
-    endpoint: otel-collector-signoz:4317
+    endpoint: http://localhost:4318
     tls:
       insecure: true
-    headers:
-      signoz-access-token: ""
   
   # Debug logging
   debug:
