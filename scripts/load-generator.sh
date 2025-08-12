@@ -36,28 +36,30 @@ error_log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1" | tee -a "$ERROR_LOG"
 }
 
-# Function to generate random employee data
+# Function to generate random employee data (matching your API schema)
 generate_employee_data() {
-    local names=("John Doe" "Jane Smith" "Bob Johnson" "Alice Brown" "Charlie Davis" "Eva Wilson" "Frank Miller" "Grace Lee" "Henry Taylor" "Ivy Chen")
-    local positions=("Software Engineer" "Senior Developer" "Team Lead" "Product Manager" "DevOps Engineer" "Data Analyst" "QA Engineer" "UI/UX Designer")
+    local firstnames=("John" "Jane" "Bob" "Alice" "Charlie" "Eva" "Frank" "Grace" "Henry" "Ivy")
+    local lastnames=("Doe" "Smith" "Johnson" "Brown" "Davis" "Wilson" "Miller" "Lee" "Taylor" "Chen")
     
-    local name=${names[$RANDOM % ${#names[@]}]}
-    local email=$(echo "$name" | tr ' ' '.' | tr '[:upper:]' '[:lower:]')@company.com
-    local position=${positions[$RANDOM % ${#positions[@]}]}
-    local salary=$((50000 + RANDOM % 100000))
+    local firstname=${firstnames[$RANDOM % ${#firstnames[@]}]}
+    local lastname=${lastnames[$RANDOM % ${#lastnames[@]}]}
+    local rssbNumber="TEST$(date +%s)$RANDOM"
+    local dob_year=$((1980 + RANDOM % 25))  # 1980-2004
+    local dob_month=$(printf "%02d" $((1 + RANDOM % 12)))
+    local dob_day=$(printf "%02d" $((1 + RANDOM % 28)))
+    local dob="${dob_year}-${dob_month}-${dob_day}"
     
-    echo "{\"name\":\"$name\",\"email\":\"$email\",\"position\":\"$position\",\"salary\":$salary}"
+    echo "{\"firstname\":\"$firstname\",\"lastname\":\"$lastname\",\"rssbNumber\":\"$rssbNumber\",\"dob\":\"$dob\"}"
 }
 
-# Function to generate random contribution data
+# Function to generate random contribution data (matching your API schema)
 generate_contribution_data() {
     local employee_id="$1"
+    local employer_id="EMP$(date +%s)$RANDOM"
     local amount=$((500 + RANDOM % 2000))
-    local types=("MONTHLY" "ANNUAL" "BONUS")
-    local type=${types[$RANDOM % ${#types[@]}]}
-    local date="2025-$(printf "%02d" $((1 + RANDOM % 12)))-$(printf "%02d" $((1 + RANDOM % 28)))"
+    local contribution_date="2025-$(printf "%02d" $((1 + RANDOM % 12)))-$(printf "%02d" $((1 + RANDOM % 28)))"
     
-    echo "{\"employeeId\":\"$employee_id\",\"amount\":$amount,\"type\":\"$type\",\"date\":\"$date\"}"
+    echo "{\"employeeId\":\"$employee_id\",\"employerId\":\"$employer_id\",\"amount\":$amount,\"contributionDate\":\"$contribution_date\"}"
 }
 
 # Function to make HTTP request and measure response time
@@ -116,12 +118,14 @@ simulate_user_session() {
         
         # Realistic user flow: 70% reads, 30% writes
         if [[ $((RANDOM % 10)) -lt 7 ]]; then
-            # Read operations
-            case $((RANDOM % 4)) in
+            # Read operations (using correct API endpoints)
+            case $((RANDOM % 6)) in
                 0) make_request "GET" "$ORACLE_URL/employees" "" "$user_id" "$request_count" ;;
-                1) make_request "GET" "$ORACLE_URL/health" "" "$user_id" "$request_count" ;;
-                2) make_request "GET" "$IMISANZU_URL/contributions" "" "$user_id" "$request_count" ;;
-                3) make_request "GET" "$IMISANZU_URL/health" "" "$user_id" "$request_count" ;;
+                1) make_request "GET" "$ORACLE_URL/employees" "" "$user_id" "$request_count" ;;
+                2) make_request "GET" "$IMISANZU_URL/employees" "" "$user_id" "$request_count" ;;
+                3) make_request "GET" "$IMISANZU_URL/contributions/cache/stats" "" "$user_id" "$request_count" ;;
+                4) make_request "GET" "$IMISANZU_URL/contributions/employee/TEST123" "" "$user_id" "$request_count" ;;
+                5) make_request "GET" "$IMISANZU_URL/employees" "" "$user_id" "$request_count" ;;
             esac
         else
             # Write operations
@@ -135,15 +139,15 @@ simulate_user_session() {
                 if [[ $((RANDOM % 3)) -eq 0 ]]; then
                     sleep 1  # Brief delay to simulate user thinking time
                     local contribution_data
-                    contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8)")
+                    contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8 2>/dev/null || echo "TEST$RANDOM")")
                     request_count=$((request_count + 1))
-                    make_request "POST" "$IMISANZU_URL/contributions" "$contribution_data" "$user_id" "$request_count"
+                    make_request "POST" "$ORACLE_URL/contributions" "$contribution_data" "$user_id" "$request_count"
                 fi
             else
                 # Create contribution with random employee ID
                 local contribution_data
-                contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8)")
-                make_request "POST" "$IMISANZU_URL/contributions" "$contribution_data" "$user_id" "$request_count"
+                contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8 2>/dev/null || echo "TEST$RANDOM")")
+                make_request "POST" "$ORACLE_URL/contributions" "$contribution_data" "$user_id" "$request_count"
             fi
         fi
         
@@ -316,7 +320,7 @@ test_connectivity() {
     echo -e "${BLUE}🔗 Testing Service Connectivity${NC}"
     echo "════════════════════════════════════════"
     
-    local services=("$ORACLE_URL/health" "$IMISANZU_URL/health")
+    local services=("$ORACLE_URL/employees" "$IMISANZU_URL/employees")
     
     for service in "${services[@]}"; do
         local response

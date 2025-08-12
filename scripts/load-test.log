@@ -1,0 +1,6 @@
+[2025-08-12 07:18:21] Load test started - Duration: 120s, Users: 5, RPS: 2
+[2025-08-12 07:18:21] User 1: Starting session for 120s (2 req/s)
+[2025-08-12 07:18:27] User 2: Starting session for 120s (2 req/s)
+[2025-08-12 07:18:33] User 3: Starting session for 120s (2 req/s)
+[2025-08-12 07:18:39] User 4: Starting session for 120s (2 req/s)
+[2025-08-12 07:18:45] User 5: Starting session for 120s (2 req/s)

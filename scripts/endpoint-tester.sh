@@ -11,7 +11,7 @@ IMISANZU_URL="http://localhost:3001"
 PROMETHEUS_URL="http://localhost:9090"
 GRAFANA_URL="http://localhost:3000"
 SIGNOZ_QUERY_URL="http://localhost:8080"
-SIGNOZ_FRONTEND_URL="http://localhost:3301"
+SIGNOZ_FRONTEND_URL="http://localhost:8080"
 
 # Test interval in seconds
 INTERVAL=30
@@ -67,7 +67,7 @@ test_endpoint() {
     fi
 }
 
-# Function to create test data
+# Function to create test data (using correct API schema)
 create_test_data() {
     local should_fail="$1"
     
@@ -76,8 +76,8 @@ create_test_data() {
         return 1
     fi
 
-    # Create employee in Oracle service
-    local employee_data='{"name":"John Doe","email":"john.doe@example.com","position":"Software Engineer","salary":75000}'
+    # Create employee in Oracle service (using correct schema)
+    local employee_data='{"firstname":"John","lastname":"Doe","rssbNumber":"TEST'$(date +%s)'","dob":"1990-01-01"}'
     local employee_response
     employee_response=$(curl -s -X POST \
         -H "Content-Type: application/json" \
@@ -87,18 +87,23 @@ create_test_data() {
     if [[ -n "$employee_response" ]]; then
         log "Created test employee: $employee_response"
         
-        # Extract employee ID for contribution test
+        # Extract employee ID for contribution test (handle both jq and manual parsing)
         local employee_id
-        employee_id=$(echo "$employee_response" | jq -r '.id' 2>/dev/null || echo "")
+        if command -v jq >/dev/null 2>&1; then
+            employee_id=$(echo "$employee_response" | jq -r '.id' 2>/dev/null || echo "")
+        else
+            # Manual parsing if jq is not available
+            employee_id=$(echo "$employee_response" | grep -o '"id":"[^"]*"' | cut -d'"' -f4 || echo "")
+        fi
         
         if [[ -n "$employee_id" && "$employee_id" != "null" ]]; then
-            # Create contribution in Imisanzu service
-            local contribution_data="{\"employeeId\":\"$employee_id\",\"amount\":1000,\"type\":\"MONTHLY\",\"date\":\"2025-01-01\"}"
+            # Create contribution in Oracle service (contributions are managed by Oracle)
+            local contribution_data='{"employeeId":"'$employee_id'","employerId":"EMP'$(date +%s)'","amount":1000,"contributionDate":"2025-01-01"}'
             local contribution_response
             contribution_response=$(curl -s -X POST \
                 -H "Content-Type: application/json" \
                 -d "$contribution_data" \
-                "$IMISANZU_URL/api/v1/contributions" 2>/dev/null || echo "")
+                "$ORACLE_URL/api/v1/contributions" 2>/dev/null || echo "")
             
             if [[ -n "$contribution_response" ]]; then
                 log "Created test contribution: $contribution_response"
@@ -148,7 +153,7 @@ main() {
         
         # Test Oracle service endpoints
         echo "🏛️  Testing Oracle Service..."
-        test_endpoint "Oracle" "$ORACLE_URL" "/api/v1/health" "200" "$should_fail" && ((passed_tests++))
+        test_endpoint "Oracle" "$ORACLE_URL" "/api/v1/employees" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
         test_endpoint "Oracle" "$ORACLE_URL" "/api/v1/employees" "200" "$should_fail" && ((passed_tests++))
@@ -156,10 +161,13 @@ main() {
         
         # Test Imisanzu service endpoints
         echo "🏢 Testing Imisanzu Service..."
-        test_endpoint "Imisanzu" "$IMISANZU_URL" "/api/v1/health" "200" "$should_fail" && ((passed_tests++))
+        test_endpoint "Imisanzu" "$IMISANZU_URL" "/api/v1/employees" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
-        test_endpoint "Imisanzu" "$IMISANZU_URL" "/api/v1/contributions" "200" "$should_fail" && ((passed_tests++))
+        test_endpoint "Imisanzu" "$IMISANZU_URL" "/api/v1/employees" "200" "$should_fail" && ((passed_tests++))
+        ((total_tests++))
+        
+        test_endpoint "Imisanzu" "$IMISANZU_URL" "/api/v1/contributions/cache/stats" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
         # Test observability stack
@@ -170,10 +178,10 @@ main() {
         test_endpoint "Grafana" "$GRAFANA_URL" "/api/health" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
-        test_endpoint "SigNoz Query" "$SIGNOZ_QUERY_URL" "/api/v1/version" "200" "$should_fail" && ((passed_tests++))
+        test_endpoint "SigNoz Query" "$SIGNOZ_QUERY_URL" "/api/v1/health" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
-        test_endpoint "SigNoz Frontend" "$SIGNOZ_FRONTEND_URL" "/" "404" "$should_fail" && ((passed_tests++))
+        test_endpoint "SigNoz Frontend" "$SIGNOZ_FRONTEND_URL" "/" "200" "$should_fail" && ((passed_tests++))
         ((total_tests++))
         
         # Create test data (with potential failure)
