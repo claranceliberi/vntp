@@ -54,12 +54,12 @@ generate_employee_data() {
 
 # Function to generate random contribution data (matching your API schema)
 generate_contribution_data() {
-    local employee_id="$1"
-    local employer_id="EMP$(date +%s)$RANDOM"
+    local period="2025-$(printf "%02d" $((1 + RANDOM % 12)))"
+    local rssbNumber="TEST$(date +%s)$RANDOM"
+    local matricule="EMP$(date +%s)$RANDOM"
     local amount=$((500 + RANDOM % 2000))
-    local contribution_date="2025-$(printf "%02d" $((1 + RANDOM % 12)))-$(printf "%02d" $((1 + RANDOM % 28)))"
     
-    echo "{\"employeeId\":\"$employee_id\",\"employerId\":\"$employer_id\",\"amount\":$amount,\"contributionDate\":\"$contribution_date\"}"
+    echo "{\"period\":\"$period\",\"rssbNumber\":\"$rssbNumber\",\"matricule\":\"$matricule\",\"amount\":$amount}"
 }
 
 # Function to make HTTP request and measure response time
@@ -139,14 +139,14 @@ simulate_user_session() {
                 if [[ $((RANDOM % 3)) -eq 0 ]]; then
                     sleep 1  # Brief delay to simulate user thinking time
                     local contribution_data
-                    contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8 2>/dev/null || echo "TEST$RANDOM")")
+                    contribution_data=$(generate_contribution_data)
                     request_count=$((request_count + 1))
                     make_request "POST" "$ORACLE_URL/contributions" "$contribution_data" "$user_id" "$request_count"
                 fi
             else
-                # Create contribution with random employee ID
+                # Create contribution
                 local contribution_data
-                contribution_data=$(generate_contribution_data "$(echo $RANDOM | md5sum | cut -c1-8 2>/dev/null || echo "TEST$RANDOM")")
+                contribution_data=$(generate_contribution_data)
                 make_request "POST" "$ORACLE_URL/contributions" "$contribution_data" "$user_id" "$request_count"
             fi
         fi

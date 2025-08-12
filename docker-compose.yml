@@ -64,9 +64,11 @@ services:
       - JWT_ISSUER=vntp-oracle-service
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz-otel-collector:4318
       - OTEL_EXPORTER_OTLP_HEADERS=
       - OTEL_RESOURCE_ATTRIBUTES=service.name=oracle-service,service.version=1.0.0,deployment.environment=docker
+      - OTEL_LOG_LEVEL=DEBUG
+      - DEBUG=@opentelemetry/*
     networks:
       - default
     depends_on:
@@ -78,7 +80,7 @@ services:
       test:
         [
           'CMD-SHELL',
-          'wget -q --spider http://localhost:3002/api/v1/employees || exit 1',
+          'curl -f http://localhost:3002/api/v1/employees > /dev/null 2>&1 || exit 1',
         ]
       interval: 30s
       timeout: 10s
@@ -103,9 +105,11 @@ services:
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
       - ORACLE_SERVICE_URL=http://oracle-service:3002
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz-otel-collector:4318
       - OTEL_EXPORTER_OTLP_HEADERS=
       - OTEL_RESOURCE_ATTRIBUTES=service.name=imisanzu-service,service.version=1.0.0,deployment.environment=docker
+      - OTEL_LOG_LEVEL=DEBUG
+      - DEBUG=@opentelemetry/*
     networks:
       - default
     depends_on:
@@ -119,7 +123,7 @@ services:
       test:
         [
           'CMD-SHELL',
-          'wget -q --spider http://localhost:3001/api/v1/employees || exit 1',
+          'curl -f http://localhost:3001/api/v1/employees > /dev/null 2>&1 || exit 1',
         ]
       interval: 30s
       timeout: 10s
@@ -159,7 +163,6 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-
 
   prometheus:
     image: prom/prometheus:latest
@@ -207,7 +210,8 @@ services:
 
 networks:
   default:
-    name: vntp-network
+    name: signoz-net
+    external: true
 
 volumes:
   postgres_imisanzu_data:

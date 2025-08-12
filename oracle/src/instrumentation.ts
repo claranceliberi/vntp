@@ -1,47 +1,21 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
-import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 
-// Configure trace exporter
+const otlpEndpoint = (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://signoz-otel-collector:4318') + '/v1/traces';
+console.log('🔗 OTEL Endpoint configured:', otlpEndpoint);
+
+// Create trace exporter with error handling
 const traceExporter = new OTLPTraceExporter({
-  url: (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318') + '/v1/traces',
+  url: otlpEndpoint,
+  headers: {},
+  timeoutMillis: 5000, // 5 second timeout
 });
 
-// Configure metrics exporter
-const metricExporter = new OTLPMetricExporter({
-  url: (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318') + '/v1/metrics',
-});
-
-// Configure logs exporter
-const logExporter = new OTLPLogExporter({
-  url: (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318') + '/v1/logs',
-});
-
-// Define service resource attributes
-const resource = Resource.default().merge(
-  new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'oracle-service',
-    [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',
-    [SemanticResourceAttributes.SERVICE_NAMESPACE]: 'vntp',
-    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'development',
-    'service.type': 'master-data-api',
-    'service.component': 'oracle',
-  }),
-);
-
-const sdk = new NodeSDK({
-  resource,
+const otelSDK = new NodeSDK({
   traceExporter,
-  metricReader: new PeriodicExportingMetricReader({
-    exporter: metricExporter,
-    exportIntervalMillis: 30000,
-  }) as any,
-  logRecordProcessor: logExporter as any,
   instrumentations: [
     getNodeAutoInstrumentations({
       // Disable noisy instrumentations
@@ -51,17 +25,14 @@ const sdk = new NodeSDK({
       '@opentelemetry/instrumentation-dns': {
         enabled: false,
       },
-      // Enable useful ones with specific configuration
+      // Enable useful instrumentations
       '@opentelemetry/instrumentation-http': {
         enabled: true,
-        requestHook: (span, request) => {
-          const headers = 'headers' in request ? request.headers : {};
-          span.setAttributes({
-            'http.request.body.size': headers['content-length'] || 0,
-          });
-        },
       },
       '@opentelemetry/instrumentation-express': {
+        enabled: true,
+      },
+      '@opentelemetry/instrumentation-nestjs-core': {
         enabled: true,
       },
       '@opentelemetry/instrumentation-pg': {
@@ -72,6 +43,14 @@ const sdk = new NodeSDK({
       },
     }),
   ],
+  resource: new Resource({
+    [SemanticResourceAttributes.SERVICE_NAME]: 'oracle-service',
+    [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',
+    [SemanticResourceAttributes.SERVICE_NAMESPACE]: 'vntp',
+    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'docker',
+    'service.type': 'master-data-api',
+    'service.component': 'oracle',
+  }),
 });
 
-export default sdk;
+export default otelSDK;

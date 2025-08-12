@@ -1,8 +1,7 @@
 // Initialize OpenTelemetry BEFORE any other imports
-import sdk from './instrumentation';
-sdk.start();
+import otelSDK from './instrumentation';
 
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -55,11 +54,23 @@ function createSwagger(app: INestApplication) {
  * parsing middleware.
  */
 async function bootstrap(): Promise<void> {
+    const logger = new Logger('Bootstrap');
+    
+    try {
+        // Start OpenTelemetry SDK before creating the app
+        await otelSDK.start();
+        logger.log('✅ OpenTelemetry SDK started successfully');
+        logger.log(`🔗 OTEL Endpoint: ${process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318'}`);
+    } catch (error) {
+        logger.error('🚨 Failed to start OpenTelemetry SDK:', error);
+        // Continue without telemetry - don't crash the service
+    }
 
-    const app = await NestFactory.create<NestFastifyApplication>(
-        ApplicationModule,
-        new FastifyAdapter()
-    );
+    try {
+        const app = await NestFactory.create<NestFastifyApplication>(
+            ApplicationModule,
+            new FastifyAdapter()
+        );
 
     // @todo Enable Helmet for better API security headers
 
@@ -69,10 +80,15 @@ async function bootstrap(): Promise<void> {
         createSwagger(app);
     }
 
-    const logInterceptor = app.select(CommonModule).get(LogInterceptor);
-    app.useGlobalInterceptors(logInterceptor);
+        const logInterceptor = app.select(CommonModule).get(LogInterceptor);
+        app.useGlobalInterceptors(logInterceptor);
 
-    await app.listen(process.env.API_PORT || API_DEFAULT_PORT, '0.0.0.0');
+        await app.listen(process.env.API_PORT || API_DEFAULT_PORT, '0.0.0.0');
+        logger.log(`Oracle service running on port ${process.env.API_PORT || API_DEFAULT_PORT}`);
+    } catch (error) {
+        logger.error('Error starting Oracle service:', error);
+        process.exit(1);
+    }
 }
 
 /**
