@@ -64,7 +64,7 @@ services:
       - JWT_ISSUER=vntp-oracle-service
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
       - OTEL_EXPORTER_OTLP_HEADERS=
       - OTEL_RESOURCE_ATTRIBUTES=service.name=oracle-service,service.version=1.0.0,deployment.environment=docker
     networks:
@@ -103,7 +103,7 @@ services:
       - HEALTH_TOKEN=health_check_token_123
       - PASSENGERS_ALLOWED=yes
       - ORACLE_SERVICE_URL=http://oracle-service:3002
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
       - OTEL_EXPORTER_OTLP_HEADERS=
       - OTEL_RESOURCE_ATTRIBUTES=service.name=imisanzu-service,service.version=1.0.0,deployment.environment=docker
     networks:
