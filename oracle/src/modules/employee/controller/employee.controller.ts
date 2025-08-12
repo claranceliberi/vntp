@@ -3,6 +3,11 @@ import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { trace, SpanStatusCode } from '@opentelemetry/api';
 
 import { LoggerService } from '../../common';
+import { 
+  incrementEmployeeOperation, 
+  recordRequestDuration,
+  employeeCounter 
+} from '../../../metrics';
 
 import { EmployeeData, EmployeeInput } from '../model';
 import { EmployeeService } from '../service';
@@ -22,10 +27,17 @@ export class EmployeeController {
     @ApiOperation({ summary: 'Find all employees' })
     @ApiResponse({ status: HttpStatus.OK, isArray: true, type: EmployeeData })
     public async find(): Promise<EmployeeData[]> {
+        const startTime = Date.now();
 
         return tracer.startActiveSpan('employee.find_all', async (span) => {
             try {
                 const employees = await this.employeeService.find();
+                
+                // Record metrics
+                employeeCounter.add(employees.length, { operation: 'list' });
+                incrementEmployeeOperation('read_all', 'success');
+                recordRequestDuration(Date.now() - startTime, 'GET', '/employees', 200);
+                
                 span.setAttributes({
                     'employees.count': employees.length,
                     'operation.type': 'read_all',
@@ -34,6 +46,9 @@ export class EmployeeController {
                 span.setStatus({ code: SpanStatusCode.OK });
                 return employees;
             } catch (error) {
+                incrementEmployeeOperation('read_all', 'error');
+                recordRequestDuration(Date.now() - startTime, 'GET', '/employees', 500);
+                
                 span.recordException(error);
                 span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
                 throw error;
